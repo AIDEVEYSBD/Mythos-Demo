@@ -236,7 +236,7 @@ export default function ActionsSection() {
                       >
                         {a.risk}
                       </span>
-                      <span className="font-inter text-[11px] text-[#606060]">→ {a.horizon}</span>
+                      <span className="font-inter text-[11px] text-white">→ {a.horizon}</span>
                     </div>
                   </div>
                 ))}

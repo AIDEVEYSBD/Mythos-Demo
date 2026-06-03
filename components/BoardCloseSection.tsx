@@ -238,7 +238,7 @@ export default function BoardCloseSection() {
         <p className="bc-reveal mt-12 font-cormorant text-4xl font-light text-white lg:text-5xl">
           Every action in this brief can <span className="text-[#f59e0b]">begin this week.</span>
         </p>
-        <p className="bc-reveal mx-auto mt-16 max-w-xl border-t border-white/[0.06] pt-8 font-inter text-xs leading-relaxed text-[#404040]">
+        <p className="bc-reveal mx-auto mt-16 max-w-xl border-t border-white/[0.06] pt-8 font-inter text-xs leading-relaxed text-white">
           Source: &ldquo;The AI Vulnerability Storm: Building a Mythos-ready Security Program&rdquo; · CSA CISO
           Community, SANS, [un]prompted, OWASP Gen AI Security Project · v0.95, April 2026 · CC BY-NC 4.0
         </p>

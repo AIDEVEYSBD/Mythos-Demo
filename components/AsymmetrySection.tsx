@@ -170,7 +170,7 @@ export default function AsymmetrySection() {
           <br />
           <span className="text-[#f59e0b]">The answer is not more effort — it is leverage.</span>
         </blockquote>
-        <figcaption className="mt-8 font-inter text-xs uppercase tracking-[0.25em] text-[#606060]">
+        <figcaption className="mt-8 font-inter text-xs uppercase tracking-[0.25em] text-white">
           Re-prioritize · Automate · Contain
         </figcaption>
       </figure>

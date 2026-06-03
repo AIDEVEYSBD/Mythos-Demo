@@ -135,7 +135,7 @@ export default function GrcImpactSection() {
             <div className="mt-7 space-y-4">
               {p.shifts.map((s) => (
                 <div key={s.was} className="rounded-xl border border-white/[0.06] bg-[#0a0a0a] p-4">
-                  <p className="font-inter text-xs leading-relaxed text-[#606060] line-through decoration-[#606060]/50">
+                  <p className="font-inter text-xs leading-relaxed text-white line-through decoration-white/50">
                     {s.was}
                   </p>
                   <p className="mt-1.5 flex items-start gap-2 font-inter text-sm leading-relaxed text-white">
@@ -186,12 +186,12 @@ export default function GrcImpactSection() {
                   {f.code}
                 </p>
                 <p className="mt-3 font-inter text-xs leading-relaxed text-[#a3a3a3]">{f.name}</p>
-                <p className="mt-4 font-inter text-[11px] uppercase tracking-[0.18em] text-[#606060]">{f.scope}</p>
+                <p className="mt-4 font-inter text-[11px] uppercase tracking-[0.18em] text-white">{f.scope}</p>
               </div>
             </div>
           ))}
         </div>
-        <p className="grc-reveal mx-auto mt-10 max-w-2xl text-center font-inter text-sm leading-relaxed text-[#606060]">
+        <p className="grc-reveal mx-auto mt-10 max-w-2xl text-center font-inter text-sm leading-relaxed text-white">
           Every risk in the register that follows is tagged to these four. The shift is real,
           but it is legible — and that is the opening for the program.
         </p>

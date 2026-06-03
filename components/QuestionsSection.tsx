@@ -94,7 +94,7 @@ export default function QuestionsSection() {
             questions triage your program&apos;s real state — and your real influence over the
             functions you don&apos;t own.
           </p>
-          <p className="q-reveal mt-6 max-w-md font-inter text-sm leading-relaxed text-[#606060]">
+          <p className="q-reveal mt-6 max-w-md font-inter text-sm leading-relaxed text-white">
             Answer them honestly as we go. The gaps are your starting backlog.
           </p>
         </div>
@@ -117,7 +117,7 @@ export default function QuestionsSection() {
                 >
                   <span
                     className={`font-cormorant text-3xl font-light leading-none transition-colors ${
-                      isOpen ? "text-[#f59e0b]" : "text-[#606060]"
+                      isOpen ? "text-[#f59e0b]" : "text-white"
                     }`}
                   >
                     {String(i + 1).padStart(2, "0")}

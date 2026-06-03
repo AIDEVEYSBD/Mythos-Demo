@@ -107,7 +107,7 @@ export default function HumanTurnSection() {
 
       {/* across-the-board strip */}
       <div className="ht-reveal mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2.5">
-        <span className="mr-1 font-inter text-[11px] uppercase tracking-[0.2em] text-[#606060]">Not just code —</span>
+        <span className="mr-1 font-inter text-[11px] uppercase tracking-[0.2em] text-white">Not just code —</span>
         {ACROSS.map((a) => (
           <span
             key={a}
@@ -118,7 +118,7 @@ export default function HumanTurnSection() {
         ))}
       </div>
 
-      <p className="ht-reveal mx-auto mt-16 max-w-2xl text-center font-inter text-base leading-relaxed text-[#606060]">
+      <p className="ht-reveal mx-auto mt-16 max-w-2xl text-center font-inter text-base leading-relaxed text-white">
         This isn&apos;t a crisis of relevance — it&apos;s a normal response to a disruptive shift. The
         practitioners who adapt fastest will be the ones who lean into the tooling rather than guard
         against it.

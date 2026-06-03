@@ -176,7 +176,7 @@ export default function ProgramSection() {
           {METRICS.map((m) => (
             <div key={m.label} className="prog-reveal rounded-2xl border border-white/[0.08] bg-[#0d0d0d] p-6">
               <p className="font-inter text-sm font-semibold text-white">{m.label}</p>
-              <p className="mt-4 font-inter text-xs leading-relaxed text-[#606060] line-through decoration-[#606060]/50">
+              <p className="mt-4 font-inter text-xs leading-relaxed text-white line-through decoration-white/50">
                 {m.was}
               </p>
               <p className="mt-1.5 flex items-start gap-2 font-inter text-sm leading-relaxed text-[#f59e0b]">

@@ -246,7 +246,7 @@ export default function OriginsSection({
 
             {/* hover / tap cue */}
             <span
-              className={`ml-4 align-middle font-inter text-xs uppercase tracking-[0.2em] text-[#606060] transition-opacity duration-300 ${
+              className={`ml-4 align-middle font-inter text-xs uppercase tracking-[0.2em] text-white transition-opacity duration-300 ${
                 cardOpen ? "opacity-0" : "opacity-100"
               }`}
             >
@@ -275,7 +275,7 @@ export default function OriginsSection({
                     className="h-60 w-48 flex-none rounded-lg object-cover"
                   />
                 ) : (
-                  <div className="flex h-60 w-48 flex-none items-center justify-center rounded-lg border border-white/10 bg-[#0a0a0a] p-2 text-center font-mono text-[10px] leading-relaxed text-[#404040]">
+                  <div className="flex h-60 w-48 flex-none items-center justify-center rounded-lg border border-white/10 bg-[#0a0a0a] p-2 text-center font-mono text-[10px] leading-relaxed text-white">
                     [ Claude Shannon · Bell Labs, 1950 ]
                   </div>
                 )}
@@ -398,7 +398,7 @@ export default function OriginsSection({
                     <span className="block font-inter text-sm text-[#a3a3a3]">
                       {fact.label}
                     </span>
-                    <span className="mt-1 block font-inter text-xs text-[#606060]">
+                    <span className="mt-1 block font-inter text-xs text-white">
                       {fact.sub}
                     </span>
                   </span>
@@ -480,7 +480,7 @@ export default function OriginsSection({
                 <p className="mt-2 font-inter text-sm font-medium text-white">
                   {item.title}
                 </p>
-                <p className="mt-1 font-inter text-xs leading-relaxed text-[#606060]">
+                <p className="mt-1 font-inter text-xs leading-relaxed text-white">
                   {item.desc}
                 </p>
               </div>

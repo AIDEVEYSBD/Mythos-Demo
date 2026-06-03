@@ -23,7 +23,7 @@ const CLOCK_STOPS: ClockStop[] = [
   { year: "2021", ttx: "Weeks", note: "Mass-exploitation of disclosed CVEs becomes routine within weeks" },
   { year: "2024", ttx: "Days", note: "Exploit-from-patch-diff shrinks the window to days" },
   { year: "2025", ttx: "Hours", note: "Autonomous agents reproduce and weaponize zero-days in hours" },
-  { year: "2026", ttx: "< 1 Day", note: "The Zero Day Clock reaches midnight — exploitation at machine speed" },
+  { year: "2026", ttx: "Minutes", note: "The Zero Day Clock reaches midnight — exploitation at machine speed" },
 ];
 
 // The documented run-up to Mythos. "The acceleration, not the starting gun."
@@ -127,8 +127,12 @@ export default function AccelerationSection() {
         const startHour = 9; // 2016 sits the hands well back from midnight
         const hour = startHour + (12 - startHour) * p; // → 12 at p=1
         const minuteTurns = 6; // dramatic spin-up of the minute hand
-        const minuteDeg = (hour % 12) * 30 + p * minuteTurns * 360;
-        const hourDeg = (hour % 12) * 30 + ((hour % 1) * 30 - (p * 0 ));
+        // Minute hand: starts at 12, spins exactly `minuteTurns` revolutions and
+        // lands back on 12 at p=1 (so the deck reads "9:00 → midnight" correctly).
+        const minuteDeg = p * minuteTurns * 360;
+        // Hour hand: a float hour already encodes its fractional sweep, so the
+        // angle is simply (hour % 12) * 30 — no double-count, no overshoot past 12.
+        const hourDeg = (hour % 12) * 30;
 
         if (minuteHandRef.current)
           minuteHandRef.current.setAttribute("transform", `rotate(${minuteDeg} 200 200)`);
@@ -276,7 +280,7 @@ export default function AccelerationSection() {
               {/* hub */}
               <circle cx="200" cy="200" r="7" fill="#f59e0b" />
               {/* midnight label */}
-              <text x="200" y="60" textAnchor="middle" className="font-inter" fontSize="11" letterSpacing="3" fill="#606060">
+              <text x="200" y="60" textAnchor="middle" className="font-inter" fontSize="11" letterSpacing="3" fill="#ffffff">
                 MIDNIGHT
               </text>
             </svg>
@@ -287,10 +291,10 @@ export default function AccelerationSection() {
             <p className="font-inter text-xs font-medium uppercase tracking-[0.3em] text-[#f59e0b]">
               The Zero Day Clock
             </p>
-            <div ref={yearRef} className="mt-4 font-cormorant text-6xl font-light leading-none text-[#606060] lg:text-7xl">
+            <div ref={yearRef} className="mt-4 font-cormorant text-6xl font-light leading-none text-white lg:text-7xl">
               2016
             </div>
-            <p className="mt-6 font-inter text-xs uppercase tracking-[0.25em] text-[#606060]">
+            <p className="mt-6 font-inter text-xs uppercase tracking-[0.25em] text-white">
               Time from disclosure to working exploit
             </p>
             <div ref={ttxRef} className="mt-2 font-cormorant text-5xl font-light leading-none text-white lg:text-6xl">
@@ -299,7 +303,7 @@ export default function AccelerationSection() {
             <p ref={noteRef} className="mt-8 min-h-[3.5rem] max-w-xs font-inter text-sm leading-relaxed text-[#a3a3a3]">
               DARPA Cyber Grand Challenge — machines first patch and exploit autonomously
             </p>
-            <p className="mt-6 font-inter text-[11px] uppercase tracking-[0.2em] text-[#404040]">
+            <p className="mt-6 font-inter text-[11px] uppercase tracking-[0.2em] text-white">
               Scroll to advance the clock
             </p>
           </div>
@@ -316,7 +320,7 @@ export default function AccelerationSection() {
                 className="h-2.5 w-2.5 rounded-full transition-all duration-300"
                 style={{ background: "rgba(255,255,255,0.18)" }}
               />
-              <span className="font-inter text-[10px] uppercase tracking-[0.15em] text-[#606060]">{s.year}</span>
+              <span className="font-inter text-[10px] uppercase tracking-[0.15em] text-white">{s.year}</span>
             </div>
           ))}
         </div>

@@ -427,7 +427,7 @@ export default function HowIsDifferentSection() {
         positions[i * 3] = lerp(fxs[i] * W, fxe[i] * W, e);
         positions[i * 3 + 1] =
           lerp(fys[i] * H, fye[i] * H, e) +
-          Math.sin(tSec * 0.8 + phase[i]) * wave[i] * H * flight;
+          Math.sin(tSec * 0.55 + phase[i]) * wave[i] * H * flight;
         positions[i * 3 + 2] = 0;
         colors[i * 3] = lerp(COL_CODE[0], COL_OWASP[0], e);
         colors[i * 3 + 1] = lerp(COL_CODE[1], COL_OWASP[1], e);
@@ -489,8 +489,11 @@ export default function HowIsDifferentSection() {
         trigger: pinRef.current,
         pin: pinRef.current,
         start: "top top",
-        end: "+=300%",
-        scrub: 2,
+        // Cinematic pacing: more scroll-room (the dissolve→re-form unfolds
+        // slowly and deliberately) and a heavier scrub so the swarm glides with
+        // momentum and keeps settling for a beat after the scroll comes to rest.
+        end: "+=360%",
+        scrub: 3,
         anticipatePin: 1,
         onUpdate: (self) => {
           progressRef.current = self.progress;
@@ -739,7 +742,7 @@ export default function HowIsDifferentSection() {
         <h3 className="diff-reveal mt-5 text-center font-cormorant text-4xl font-light text-white">
           The receipts.
         </h3>
-        <p className="diff-reveal mx-auto mt-4 max-w-xl text-center font-inter text-sm leading-relaxed text-[#606060]">
+        <p className="diff-reveal mx-auto mt-4 max-w-xl text-center font-inter text-sm leading-relaxed text-white">
           As of Anthropic&apos;s May 2026 Glasswing update — a curated early-access program giving
           critical-software providers Mythos to patch their own products first.
         </p>
@@ -754,7 +757,7 @@ export default function HowIsDifferentSection() {
                 {m.stat}
               </p>
               <p className="mt-4 font-inter text-sm text-white">{m.label}</p>
-              <p className="mt-2 font-inter text-xs leading-relaxed text-[#606060]">
+              <p className="mt-2 font-inter text-xs leading-relaxed text-white">
                 {m.sub}
               </p>
             </div>
@@ -777,7 +780,7 @@ export default function HowIsDifferentSection() {
               fixing them amounts to a <span className="text-[#f59e0b]">major challenge for
               cybersecurity</span>.&rdquo;
             </blockquote>
-            <figcaption className="mt-6 font-inter text-xs uppercase tracking-[0.25em] text-[#606060]">
+            <figcaption className="mt-6 font-inter text-xs uppercase tracking-[0.25em] text-white">
               Anthropic · Project Glasswing update
             </figcaption>
           </figure>
@@ -833,7 +836,7 @@ export default function HowIsDifferentSection() {
           ))}
         </div>
 
-        <p className="diff-reveal mx-auto mt-12 max-w-3xl text-center font-inter text-xs leading-relaxed text-[#404040]">
+        <p className="diff-reveal mx-auto mt-12 max-w-3xl text-center font-inter text-xs leading-relaxed text-white">
           Sources: Anthropic, &ldquo;Project Glasswing&rdquo; (anthropic.com/glasswing) and its May 2026
           update · The &ldquo;AI Vulnerability Storm: Building a Mythos-ready Security Program&rdquo; ·
           CSA CISO Community, SANS, [un]prompted, OWASP Gen AI Security Project · v0.95, April 2026 ·

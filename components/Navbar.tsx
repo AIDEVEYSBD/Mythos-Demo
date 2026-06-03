@@ -14,22 +14,38 @@ export default function Navbar() {
   const [active, setActive] = useState(SECTIONS[0]?.id ?? "");
 
   useEffect(() => {
-    // Highlight whichever section occupies the middle band of the viewport.
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
+    // Real-time scroll-spy: every animation frame (throttled), the active
+    // section is the last one whose top has crossed a reference line ~35% down
+    // the viewport. Computing from scroll position (rather than relying on
+    // IntersectionObserver threshold crossings) keeps the navbar in lockstep
+    // with the scroll — including during snap glides and fast scrolling.
+    const ids = SECTIONS.map((s) => s.id);
+    let raf = 0;
 
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) observer.observe(el);
-    });
+    const compute = () => {
+      raf = 0;
+      const line = window.innerHeight * 0.35;
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top - 1 <= line) current = id;
+      }
+      setActive((prev) => (prev === current ? prev : current));
+    };
 
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(compute);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    compute();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   const goTo = (id: string) =>

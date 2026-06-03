@@ -216,7 +216,7 @@ export default function RiskRegisterSection() {
               <span className="font-cormorant text-4xl font-light" style={{ color: SEV_STYLE[s].dot }}>
                 {counts[s]}
               </span>
-              <span className="font-inter text-xs uppercase tracking-[0.2em] text-[#606060]">{s}</span>
+              <span className="font-inter text-xs uppercase tracking-[0.2em] text-white">{s}</span>
             </div>
           ))}
         </div>
@@ -229,7 +229,7 @@ export default function RiskRegisterSection() {
               className={`rounded-full border px-4 py-1.5 font-inter text-xs uppercase tracking-[0.15em] transition-colors ${
                 filter === f
                   ? "border-[#f59e0b]/50 bg-[#f59e0b]/[0.1] text-[#f59e0b]"
-                  : "border-white/10 text-[#606060] hover:text-[#a3a3a3]"
+                  : "border-white/10 text-white hover:text-[#a3a3a3]"
               }`}
             >
               {f === "ALL" ? "All risks" : f}
@@ -242,10 +242,10 @@ export default function RiskRegisterSection() {
       <div className="mt-8 overflow-hidden rounded-2xl border border-white/[0.08]">
         {/* column header (desktop) */}
         <div className="hidden grid-cols-[110px_1fr_160px_120px] gap-4 border-b border-white/[0.08] bg-[#0d0d0d] px-6 py-3 lg:grid">
-          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-[#606060]">Severity</span>
-          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-[#606060]">Risk</span>
-          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-[#606060]">Type</span>
-          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-[#606060]">Action</span>
+          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-white">Severity</span>
+          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-white">Risk</span>
+          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-white">Type</span>
+          <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-white">Action</span>
         </div>
 
         {visible.map((r) => {
@@ -287,7 +287,7 @@ export default function RiskRegisterSection() {
                   <div className="px-6 pb-6 lg:pl-[126px]">
                     <p className="max-w-3xl font-inter text-sm leading-relaxed text-[#a3a3a3]">{r.desc}</p>
                     <div className="mt-4 flex flex-wrap items-center gap-2">
-                      <span className="mr-1 font-inter text-[11px] uppercase tracking-[0.18em] text-[#606060]">
+                      <span className="mr-1 font-inter text-[11px] uppercase tracking-[0.18em] text-white">
                         Frameworks
                       </span>
                       {r.refs.map((ref) => (
@@ -312,7 +312,7 @@ export default function RiskRegisterSection() {
         })}
       </div>
 
-      <p className="reg-reveal mt-6 font-inter text-xs text-[#404040]">
+      <p className="reg-reveal mt-6 font-inter text-xs text-white">
         Type · Threat = external capability, controls raise cost · Vulnerability = addressable condition ·
         Capability gap = missing defensive function · Governance = structural failure amplifying the rest.
       </p>
