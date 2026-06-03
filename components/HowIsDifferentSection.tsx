@@ -222,6 +222,51 @@ function sampleCode(wpx: number, hpx: number): { u: number; v: number }[] {
   return pts;
 }
 
+/** Rasterize the OWASP card's text and return filled-pixel positions as {u,v}.
+ *  This is the particle DESTINATION — the swarm re-forms into the vulnerability
+ *  list, mirroring the layout of the real card that resolves on top of it. */
+function sampleOwasp(wpx: number, hpx: number): { u: number; v: number }[] {
+  const W = Math.min(1200, Math.max(2, Math.round(wpx)));
+  const H = Math.min(1400, Math.max(2, Math.round(hpx)));
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d")!;
+  ctx.fillStyle = "#fff";
+  ctx.textBaseline = "middle";
+
+  // Geometry tuned to echo OwaspCard's padding (~p-8) and divide-y rows.
+  const padX = W * 0.1;
+  const padTop = H * 0.06;
+  const padBottom = H * 0.06;
+
+  // Header: "OWASP TOP 10 · 2025"
+  const headerPx = Math.floor(H * 0.026);
+  ctx.font = `600 ${headerPx}px ui-monospace, monospace`;
+  ctx.fillText("OWASP TOP 10 · 2025", padX, padTop + headerPx);
+
+  // Ten rows: "A0x   <name>"
+  const rowsTop = padTop + headerPx * 2.6;
+  const rowH = (H - rowsTop - padBottom) / OWASP.length;
+  const rowPx = Math.floor(rowH * 0.4);
+  OWASP.forEach((o, i) => {
+    const y = rowsTop + rowH * (i + 0.5);
+    ctx.font = `${rowPx}px ui-monospace, monospace`;
+    ctx.fillText(o.code, padX, y);
+    ctx.font = `${rowPx}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.fillText(o.name, padX + W * 0.18, y);
+  });
+
+  const data = ctx.getImageData(0, 0, W, H).data;
+  const pts: { u: number; v: number }[] = [];
+  for (let y = 0; y < H; y += 3) {
+    for (let x = 0; x < W; x += 3) {
+      if (data[(y * W + x) * 4 + 3] > 128) pts.push({ u: x / W, v: y / H });
+    }
+  }
+  return pts;
+}
+
 /* ================================ Component ============================== */
 
 export default function HowIsDifferentSection() {
@@ -230,6 +275,7 @@ export default function HowIsDifferentSection() {
   const canvasMountRef = useRef<HTMLDivElement>(null);
   const codePanelRef = useRef<HTMLDivElement>(null);
   const owaspCardRef = useRef<HTMLDivElement>(null);
+  const owaspInnerRef = useRef<HTMLDivElement>(null);
 
   const stage1Ref = useRef<HTMLDivElement>(null);
   const stage2Ref = useRef<HTMLDivElement>(null);
@@ -261,7 +307,7 @@ export default function HowIsDifferentSection() {
     const mountEl = canvasMountRef.current;
     if (!mountEl) return;
 
-    const N = isMobile ? 400 : 800;
+    const N = isMobile ? 500 : 1200;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -294,8 +340,8 @@ export default function HowIsDifferentSection() {
     const phase = new Float32Array(N);
     const wave = new Float32Array(N);
 
-    // Seed the source positions from the code editor's glyphs (desktop), so the
-    // particle cloud literally has the shape of the code before it disperses.
+    // SOURCE = the code editor's glyphs (desktop), so the particle cloud
+    // literally has the shape of the code before it disperses.
     let codePts: { u: number; v: number }[] = [];
     let lf = 0.05,
       wf = 0.42,
@@ -310,9 +356,29 @@ export default function HowIsDifferentSection() {
       codePts = sampleCode(el.offsetWidth, el.offsetHeight);
     }
 
+    // DESTINATION = the OWASP card's text, measured from the real card so the
+    // swarm re-forms into the vulnerability list before the card resolves on
+    // top of it. Fractions are relative to the canvas (W/H) for resize safety.
+    let owaspPts: { u: number; v: number }[] = [];
+    let le = 0.06,
+      we = 0.4,
+      te = 0.1,
+      he = 0.7;
+    if (!isMobile && owaspInnerRef.current) {
+      const mountRect = mountEl.getBoundingClientRect();
+      const cardRect = owaspInnerRef.current.getBoundingClientRect();
+      le = (cardRect.left - mountRect.left) / W;
+      te = (cardRect.top - mountRect.top) / H;
+      we = cardRect.width / W;
+      he = cardRect.height / H;
+      owaspPts = sampleOwasp(cardRect.width, cardRect.height);
+    }
+
     for (let i = 0; i < N; i++) {
       if (codePts.length) {
-        const pt = codePts[i % codePts.length];
+        // Stride across the WHOLE glyph set so the full code shape is covered
+        // (plain i % len would only sample the top slice when pts > N).
+        const pt = codePts[Math.floor((i * codePts.length) / N)];
         fxs[i] = lf + pt.u * wf - 0.5;
         fys[i] = 0.5 - (tf + pt.v * hf);
       } else {
@@ -320,11 +386,18 @@ export default function HowIsDifferentSection() {
         fxs[i] = lerp(-0.46, -0.06, Math.random());
         fys[i] = lerp(-0.32, 0.32, Math.random());
       }
-      fxe[i] = lerp(0.06, 0.45, Math.random());
-      fye[i] = lerp(-0.4, 0.4, Math.random());
+      if (owaspPts.length) {
+        const pe = owaspPts[Math.floor((i * owaspPts.length) / N)];
+        fxe[i] = le + pe.u * we - 0.5;
+        fye[i] = 0.5 - (te + pe.v * he);
+      } else {
+        // Mobile / fallback: scatter across the right zone.
+        fxe[i] = lerp(0.06, 0.45, Math.random());
+        fye[i] = lerp(-0.4, 0.4, Math.random());
+      }
       delay[i] = Math.random();
       phase[i] = Math.random() * Math.PI * 2;
-      wave[i] = lerp(0.02, 0.06, Math.random());
+      wave[i] = lerp(0.015, 0.05, Math.random());
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -346,8 +419,10 @@ export default function HowIsDifferentSection() {
 
     const updateParticles = (p: number, tSec: number) => {
       for (let i = 0; i < N; i++) {
-        // Hold in the code shape until ~0.30, then traverse to the OWASP zone.
-        const e = easeInOut(clamp01((p - 0.3 - delay[i] * 0.12) / 0.55));
+        // Hold in the code shape until ~0.32, then re-form into the OWASP list.
+        // Staggered by delay so the swarm flows rather than snapping as a block;
+        // all particles have arrived (e=1) by ~p=0.88, before the card resolves.
+        const e = easeInOut(clamp01((p - 0.32 - delay[i] * 0.1) / 0.46));
         const flight = Math.sin(e * Math.PI);
         positions[i * 3] = lerp(fxs[i] * W, fxe[i] * W, e);
         positions[i * 3 + 1] =
@@ -394,16 +469,19 @@ export default function HowIsDifferentSection() {
     };
 
     const updateOverlays = (p: number) => {
-      setOp(stage1Ref.current, range(p, 0, 0.05) * (1 - range(p, 0.3, 0.35)));
-      setOp(stage2Ref.current, range(p, 0.38, 0.43) * (1 - range(p, 0.57, 0.62)));
-      setOp(stage3Ref.current, range(p, 0.65, 0.7));
-      // Code editor dissolves; OWASP card resolves.
+      // Stage copy: stage1 over the code, stage2 mid-flight, stage3 as the list lands.
+      setOp(stage1Ref.current, range(p, 0, 0.05) * (1 - range(p, 0.28, 0.34)));
+      setOp(stage2Ref.current, range(p, 0.4, 0.46) * (1 - range(p, 0.62, 0.68)));
+      setOp(stage3Ref.current, range(p, 0.78, 0.86));
+      // Code editor dissolves into particles; OWASP card resolves only once the
+      // swarm has re-formed into the list (particles arrive by ~0.88).
       if (codePanelRef.current)
-        codePanelRef.current.style.opacity = String(1 - range(p, 0.05, 0.3));
+        codePanelRef.current.style.opacity = String(1 - range(p, 0.06, 0.3));
       if (owaspCardRef.current)
-        owaspCardRef.current.style.opacity = String(range(p, 0.65, 0.74));
-      // Particles fade in as the code fades out, dim slightly behind the card.
-      material.opacity = range(p, 0.1, 0.3) * (1 - 0.55 * range(p, 0.85, 1));
+        owaspCardRef.current.style.opacity = String(range(p, 0.84, 0.96));
+      // Particles fade in as the code fades out, then dim behind the resolving
+      // card so its text stays legible while a faint glow remains at the edges.
+      material.opacity = range(p, 0.12, 0.3) * (1 - 0.6 * range(p, 0.88, 1));
     };
 
     if (!isMobile && pinRef.current) {
@@ -466,7 +544,10 @@ export default function HowIsDifferentSection() {
   );
 
   const OwaspCard = (
-    <div className="w-full max-w-[480px] rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-7 shadow-2xl shadow-black/50 backdrop-blur-sm lg:p-8">
+    <div
+      ref={owaspInnerRef}
+      className="w-full max-w-[480px] rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-7 shadow-2xl shadow-black/50 backdrop-blur-sm lg:p-8"
+    >
       <p className="font-inter text-xs font-medium uppercase tracking-[0.25em] text-[#f59e0b]">
         OWASP Top 10 · 2025
       </p>
