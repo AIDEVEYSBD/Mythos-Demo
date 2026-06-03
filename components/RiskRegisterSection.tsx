@@ -239,7 +239,7 @@ export default function RiskRegisterSection() {
       </div>
 
       {/* Register rows */}
-      <div className="mt-8 overflow-hidden rounded-2xl border border-white/[0.08]">
+      <div className="mt-8 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0d0d0d]">
         {/* column header (desktop) */}
         <div className="hidden grid-cols-[110px_1fr_160px_120px] gap-4 border-b border-white/[0.08] bg-[#0d0d0d] px-6 py-3 lg:grid">
           <span className="font-inter text-[11px] uppercase tracking-[0.2em] text-white">Severity</span>
