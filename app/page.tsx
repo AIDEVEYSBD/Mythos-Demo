@@ -4,7 +4,6 @@ import { useState } from "react";
 import IntroAnimation from "@/components/IntroAnimation";
 import AuroraBackground from "@/components/AuroraBackground";
 import Navbar from "@/components/Navbar";
-import ScrollSnap from "@/components/ScrollSnap";
 import SectionFade from "@/components/SectionFade";
 import OriginsSection from "@/components/OriginsSection";
 import HowIsDifferentSection from "@/components/HowIsDifferentSection";
@@ -31,9 +30,6 @@ export default function Home() {
 
       {/* Persistent deck navbar (covered by the intro until it slides away). */}
       <Navbar />
-
-      {/* Snappy "lock to viewport" catch as each section scrolls into view. */}
-      <ScrollSnap />
 
       {/* Content sits above the aurora (z-0) on its own layer. Sections are
           transparent, so the aurora shows through between and behind them.

@@ -9,10 +9,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Anchor/snap offset: align section tops just below the fixed 4rem navbar.
-   Used by both nav-click scrollIntoView and the JS section-snap controller
-   (components/ScrollSnap.tsx), which gives a snappy "lock to viewport" catch
-   on section entry without trapping the user inside the tall pinned sections. */
+/* Anchor offset: when a nav item is clicked, align the section top just below
+   the fixed 4rem navbar instead of flush against it (scrollIntoView respects
+   scroll-margin). */
 section[id] {
   scroll-margin-top: 4rem;
 }
